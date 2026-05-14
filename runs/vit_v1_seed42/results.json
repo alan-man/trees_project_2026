@@ -1,12 +1,13 @@
 {
   "run_date": "2026-04-02 22:02:37",
-  "model": "vit_v1",
+  "model": "vit",
   "hyperparameters": {
-    "model": "vit_v1",
+    "model": "vit",
     "batch_size": 32,
     "epochs": 20,
     "learning_rate": 2e-05,
-    "early_stopping_patience": 5
+    "early_stopping_patience": 5,
+    "dataset": "patches_v3"
   },
   "best_val_f1": 0.8794788273615635,
   "epochs_trained": 7,

@@ -1,8 +1,8 @@
 {
   "run_date": "2026-05-03 20:00:07",
-  "model": "dinov2_vits14_binary_head",
+  "model": "dinov2",
   "hyperparameters": {
-    "model": "dinov2_vits14_binary_head",
+    "model": "dinov2",
     "batch_size": 32,
     "epochs": 10,
     "learning_rate": 0.001,
@@ -12,7 +12,8 @@
     "scheduler": "StepLR",
     "step_size": 5,
     "gamma": 0.5,
-    "experiment": "DINOv2 on v4 augmented"
+    "experiment": "DINOv2 on v4 augmented",
+    "dataset": "patches_v4_augmented"
   },
   "best_val_f1": 0.9364295471261952,
   "epochs_trained": 10,

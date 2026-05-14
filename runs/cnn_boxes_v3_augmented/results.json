@@ -1,8 +1,8 @@
 {
   "run_date": "2026-04-03 03:03:16",
-  "model": "SimpleCNN3",
+  "model": "CNN",
   "hyperparameters": {
-    "model": "SimpleCNN3",
+    "model": "CNN",
     "epochs": 10,
     "batch_size": 32,
     "lr": 0.001,

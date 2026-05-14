@@ -1,15 +1,16 @@
 {
   "run_date": "2026-04-03 02:53:32",
-  "model": "SimpleCNN3",
+  "model": "CNN",
   "hyperparameters": {
-    "model": "SimpleCNN3",
+    "model": "CNN",
     "batch_size": 32,
     "epochs": 10,
     "learning_rate": 0.001,
     "loss": "CrossEntropyLoss",
     "patch_size": 224,
     "seed": 42,
-    "experiment": "CNN on v3 normal"
+    "experiment": "CNN on v3 normal",
+    "dataset": "patches_v3"
   },
   "best_val_f1": 0.8780487804878049,
   "epochs_trained": 10,

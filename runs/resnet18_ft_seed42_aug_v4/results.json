@@ -1,12 +1,13 @@
 {
   "run_date": "2026-04-24 15:50:42",
-  "model": "resnet18_ft",
+  "model": "resnet",
   "hyperparameters": {
-    "model": "resnet18_ft",
+    "model": "resnet",
     "batch_size": 32,
     "epochs": 10,
     "learning_rate": 2e-05,
-    "early_stopping_patience": 3
+    "early_stopping_patience": 3,
+    "dataset": "patches_v4_augmented"
   },
   "best_val_f1": 0.8541603934557864,
   "epochs_trained": 10,
