@@ -1,8 +1,23 @@
+# Python / notebooks
 *.pyc
-/eda_bbox
+__pycache__/
 .ipynb_checkpoints/
+.venv/
+
+# OS / editor
 .DS_Store
-segmentation_dataset.py
+.vscode/
+
+# Datasets and generated patches: download or regenerate them, see the README
+data/
+patches_dataset/
+
+# Model weights and per-run renders
+models/
+*.pth
+*.pt
+runs/**/viz/
+
+# Local notebook outputs
 images/
-data/cache_seg/sam_vit_b_01ec64.pth
-sam_vit_b_01ec64.pth
+/eda_bbox

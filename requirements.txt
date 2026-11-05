@@ -1,0 +1,30 @@
+# Core
+torch
+torchvision
+numpy
+pandas
+scikit-learn
+pillow
+matplotlib
+seaborn
+tqdm
+psutil
+jupyter
+
+# Dataset + geometry
+milliontrees
+shapely
+
+# Augmentation
+albumentations
+opencv-python
+
+# CLIP
+transformers
+
+# Only for notebooks/01_data/03_augmentation_libs_test.ipynb (library comparison):
+# Augmentor
+# augly
+
+# Only for notebooks/02_classification/06_coop_clip.ipynb:
+# git+https://github.com/openai/CLIP.git
