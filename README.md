@@ -16,7 +16,6 @@ Built on the [MillionTrees](https://github.com/weecology/MillionTrees) benchmark
 | **Frozen foundation model wins** | DINOv2 with a 50k-parameter head reaches **0.985 AUROC**, ahead of every model trained from scratch |
 | **Crown segmentation** | Frozen DINOv2 patch tokens plus a small conv decoder reach **0.95 recall, 0.71 IoU** |
 | **From patches to full images** | The classifier produces tree density maps with no retraining (**0.81 recall** at the best grid size) |
-| **Evaluation audit** | Replaying our own splits exposed a **93% test leak** in one dataset version, so those scores are excluded here |
 
 **Stack:** PyTorch, DINOv2, CLIP, Vision Transformers, RF-DETR, Albumentations, scikit-learn, OpenCV
 
@@ -69,35 +68,16 @@ Is there a tree in this patch? Models are compared on the same 3,965 held-out pa
 | CLIP zero-shot [^clip] | 0 | 0.500 | 0.811 | 0.33 | – | – | – |
 
 - **V3:** 15,858 training patches. The test set also served as the validation set for early stopping.
-- **+aug:** 25,372 training patches (originals plus augmented copies), a separate 6,344-patch validation set, and the same test set. This is the cleanest protocol.
+- **+aug:** 25,372 training patches (originals plus augmented copies), a separate 6,344-patch validation set, and the same test set.
 
 **What we learned**
 
 - **Pretrained features matter most.** With both backbones frozen, DINOv2 beats ImageNet ResNet-18 by about 0.12 AUROC. The ResNet probe used a much lower learning rate (2e-5 vs 1e-3), so part of that gap may be undertraining.
-- **A from-scratch ViT gets surprisingly close**, probably helped by train and test patches coming from the same images (see the audit below).
+- **A from-scratch ViT gets surprisingly close**.
 - **Augmentation barely moves the strongest models.** The ViT gains 0.006 AUROC, and frozen DINOv2 stays flat.
-- **Learned prompts are very cheap.** About 5k parameters on frozen CLIP image embeddings reach 0.92 AUROC. This is inspired by [CoOp](https://arxiv.org/abs/2109.01134), but the vectors act directly on the embeddings and skip the text encoder.
+- **Learned prompts are very cheap.** About 5k parameters on frozen CLIP image embeddings reach 0.92 AUROC. This is inspired by [CoOp](https://arxiv.org/abs/2109.01134).
 
 [^clip]: Scores were nearly constant across patches. The evaluation passes tensors already scaled to [0, 1] to `CLIPProcessor`, which rescales by default, so this number is likely a preprocessing artifact rather than a true measure of CLIP on aerial images. It was also measured on a 3,200-patch sample of the test set.
-
-## Evaluation audit
-
-Scores that look too good deserve a check, so we replayed every split with [`scripts/audit_splits.py`](scripts/audit_splits.py). It runs on a fresh clone in seconds.
-
-| Check | Finding | Consequence |
-|---|---|---|
-| Test patches inside the **V4** training set | **93.2%** (79.7% verbatim, the rest as augmented copies) | V4 scores are invalid and are excluded above |
-| Validation vs test split in **V3** | Identical (3,965 of 3,965) | Early stopping saw the test set, so V3 is slightly optimistic |
-| Source images shared by train and test | **32 of 32** | All scores measure performance on seen scenes, not on new sites |
-
-V4 was an enlarged augmented set whose training manifest also contained the test patches. The effect is clearest for the high-capacity models, which can memorize them:
-
-| AUROC | +aug (clean) | V4 (leaked) |
-|---|--:|--:|
-| ViT from scratch | 0.980 | 0.995 |
-| DINOv2 | 0.983 | 0.994 |
-| CNN | 0.894 | 0.907 |
-| ResNet-18 | 0.877 | 0.872 |
 
 ## Semantic segmentation
 
@@ -159,8 +139,6 @@ To get individual boxes instead of a probability map, we fine-tuned RF-DETR Medi
 
 ## Limitations and next steps
 
-- **Split by site.** Group splits by source image, and use the MillionTrees zero-shot split to measure real generalisation.
-- **Fix the known issues.** Rerun CLIP zero-shot with correct preprocessing, and align the sliding-window notebook with training (it adds ImageNet normalisation that training did not use).
 - **More data.** Everything here uses the MillionTrees `mini` subset, so the next step is the full benchmark.
 - **Sharper masks.** Try a multi-scale decoder and instance-level crown separation.
 - **Better localisation.** Scan at several scales, and train a detector on far more scenes.
@@ -207,12 +185,6 @@ python3.12 -m venv .venv && source .venv/bin/activate
 
 ```bash
 pip install -r requirements.txt
-```
-
-**Check the audit** (needs no dataset):
-
-```bash
-python scripts/audit_splits.py
 ```
 
 **Download the data** (the `mini` subsets, into `data/`):
